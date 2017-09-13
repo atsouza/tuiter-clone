@@ -6,6 +6,16 @@ const UserRepository = require('../../../infra/user/UserRepository');
 // PUT /users/:id (atualiza um usuario) > update()
 // DELETE /users/:id (deleta o usuario) > delete()
 
+
+/*
+
+  implementar update
+  -atualizar usuario se existir
+  -se não existir retorna 404
+  status 202 (sucesso)
+
+*/
+
 class UsersController {
 
   constructor(){
@@ -18,6 +28,7 @@ class UsersController {
     router.get('/', controller.index.bind(controller));
     router.get('/:id', controller.show.bind(controller));
     router.post('/', controller.create.bind(controller));
+    router.put('/:id', controller.update.bind(controller));
     return router;
   }
 
@@ -41,10 +52,18 @@ class UsersController {
       });
   }
 
-  create(request, response){
+  create(request, response) {
     const name = request.body.name;
     this.userRepository.add({name:name}).then(function(user) {
-      response.send(user);
+      response.status(201).send(user);
+    });
+  }
+
+  update(request, response) {
+    const name = request.body.name;
+    const id = request.body.id;
+    this.userRepository.update({name:name, id:id}).then(function (user){
+      response.status(202).send(user);
     });
   }
 

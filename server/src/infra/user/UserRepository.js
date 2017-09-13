@@ -29,6 +29,18 @@ class UserRepository {
     return Promise.resolve(newUser);
   }
 
+  update(userAttributes) {
+    const user = {name:userAttributes.name, id:userAttributes.id};
+    var pos = 0;
+    for (var i = 0; i < users.length; i++) {      
+      if(users[i].id === user.id) {
+        users[i].name = user.name;
+        pos = i;
+      }
+    }
+    return Promise.resolve(users[pos]);
+  }
+
 }
 
 module.exports = UserRepository;
